@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BookLibrary</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Добавить книгу</h1>
+        <form action="" id="book-id">
+            <div>
+                <label for="title">Название</label>
+                <input type="text" id="title-id">
+            </div>
+            <div>
+                <label for="author">Автор</label>
+                <input type="text" id="author-id">
+            </div>
+            <div>
+                <label for="title">Код</label>
+                <input type="text" id="code-id">
+            </div>
+            <div>
+                <input type="submit" value="submit">
+            </div>
+        </form>
+        <table class="sameIn">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th>Код</th>
+                    <!-- <th></th> -->
+                </tr>
+            </thead>
+            <tbody id="bookList">
+            </tbody>
+        </table>
+    </div>
+    <script src="app.js"></script>
+</body>
+
+</html>
