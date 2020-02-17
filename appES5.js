@@ -63,10 +63,22 @@ UI.prototype.showAlert = function (message, className, book) {
     }, 3000)
 
 }
+UI.prototype.deleteBook = function (target) {
 
+    if (target.className === 'delete') {
+        target.parentElement.parentElement.remove();
+        console.log(target);
+    }
+
+}
 //все события (events)
 function allEventRun() {
+    //добавление книг 
     document.querySelector('form').addEventListener('submit', addBook);
+
+    //удаление книг 
+
+    document.querySelector('#bookList').addEventListener('click', deleteItem)
 }
 
 function addBook(e) {
@@ -91,5 +103,15 @@ function addBook(e) {
         ui.clearFields();
     }
 
+    e.preventDefault();
+}
+
+
+function deleteItem(e) {
+
+    const ui = new UI();
+    ui.deleteBook(e.target);
+    ui.showAlert("Книга удалена", 'success');
+    console.log("test");
     e.preventDefault();
 }
