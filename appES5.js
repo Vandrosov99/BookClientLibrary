@@ -1,3 +1,5 @@
+//вызов всех ивенотов
+allEventRun();
 // создаем конструкторы для обьектов
 function Book(title, author, isbn) {
     this.title = title;
@@ -30,7 +32,29 @@ UI.prototype.clearFields = function () {
     document.getElementById('author-id').value = "";
     document.getElementById('code-id').value = "";
 }
-allEventRun();
+UI.prototype.showAlert = function (message, className) {
+
+    //создаем div
+    div = document.createElement('div');
+    //добавили класс
+    div.className = `alert ${className}`;
+    //в див вставлям message
+    div.appendChild(document.createTextNode(message));
+
+
+    //что бы вставить div мы должны знать что идет перед ним и что идет после него
+
+    const container = document.querySelector('.container');
+    const form = document.querySelector('form');
+    container.insertBefore(div, form);
+
+
+    //пропадание div с success + error
+    setTimeout(function () {
+        document.querySelector('.alert').remove();
+    }, 3000)
+
+}
 
 //все события (events)
 function allEventRun() {
@@ -50,11 +74,14 @@ function addBook(e) {
     //создаем экземпляр класса UI(при каждом клике новый экземпляр)
     const ui = new UI();
 
-    ui.addBookToList(book);
-    //обновляем поля инпута что бы не оставалась старая запись
-    ui.clearFields();
-    console.log(book);
-
+    if (title === '' || author === '' || isbn === '') {
+        ui.showAlert('Заполните пожалуйста все поля', 'error');
+    } else {
+        ui.addBookToList(book);
+        //обновляем поля инпута что бы не оставалась старая запись
+        ui.showAlert('Книга была добавлена ', 'success');
+        ui.clearFields();
+    }
 
     e.preventDefault();
 }
