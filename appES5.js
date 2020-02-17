@@ -32,14 +32,22 @@ UI.prototype.clearFields = function () {
     document.getElementById('author-id').value = "";
     document.getElementById('code-id').value = "";
 }
-UI.prototype.showAlert = function (message, className) {
-
+UI.prototype.showAlert = function (message, className, book) {
+    test = (book !== undefined) ? book : 'lol';
+    //название книги
+    // bookName = book.title;
     //создаем div
     div = document.createElement('div');
     //добавили класс
     div.className = `alert ${className}`;
     //в див вставлям message
-    div.appendChild(document.createTextNode(message));
+    if (book === undefined) {
+        book = '';
+        div.appendChild(document.createTextNode(message));
+    } else {
+        div.appendChild(document.createTextNode(message + test.title));
+    }
+
 
 
     //что бы вставить div мы должны знать что идет перед ним и что идет после него
@@ -79,7 +87,7 @@ function addBook(e) {
     } else {
         ui.addBookToList(book);
         //обновляем поля инпута что бы не оставалась старая запись
-        ui.showAlert('Книга была добавлена ', 'success');
+        ui.showAlert('Книга была добавлена ', 'success', book);
         ui.clearFields();
     }
 
