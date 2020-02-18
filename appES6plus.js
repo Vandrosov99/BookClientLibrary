@@ -1,5 +1,5 @@
 //вызов всех ивенотов
-allEventRun();
+
 // создаем конструкторы для обьектов
 class Book {
     constructor(title, author, isbn) {
@@ -64,15 +64,68 @@ class UI {
     deleteBook(target) {
         if (target.className === 'delete') {
             target.parentElement.parentElement.remove();
-            // console.log(target);
+            // console.log(target)
+            const ui = new UI();
+            ui.showAlert("Книга удалена", 'success');
+
         }
 
     }
 }
+//Local storage
+class Store {
 
+    static getBooks() {
+        let books;
+        if (localStorage.getItem('books') === null) {
+            books = [];
+        } else {
+            books = JSON.parse(localStorage.getItem('books'));
+        }
+        return books;
+    }
+    static displayBook() {
+        const books = Store.getBooks();
+        books.forEach(function (book) {
+            const ui = new UI();
+            ui.addBookToList(book);
+        })
+    }
+    static addBook(book) {
+
+        const books = Store.getBooks();
+        books.push(book);
+        localStorage.setItem('books', JSON.stringify(books));
+    }
+    static deleteBook(trg) {
+        const books = Store.getBooks();
+
+        if (trg.className === 'delete') {
+            const isbn = trg.parentElement.previousElementSibling.textContent;
+            books.forEach(function (book, index) {
+                if (book.isbn === isbn) {
+                    books.splice(index, 1);
+                }
+            });
+
+            localStorage.setItem('books', JSON.stringify(books));
+        }
+
+        // books.forEach(function (book, index) {
+        //     if (trg.className === 'delete') {
+        //         books.splice(index, 1);
+        //     }
+
+        // })
+
+
+    }
+}
 
 //все события (events)
 function allEventRun() {
+
+    document.addEventListener('DOMContentLoaded', Store.displayBook);
     //добавление книг 
     document.querySelector('form').addEventListener('submit', addBook);
 
@@ -98,6 +151,7 @@ function addBook(e) {
         ui.showAlert('Заполните пожалуйста все поля', 'error');
     } else {
         ui.addBookToList(book);
+        Store.addBook(book);
         //обновляем поля инпута что бы не оставалась старая запись
         ui.showAlert('Книга была добавлена ', 'success', book);
         ui.clearFields();
@@ -111,7 +165,11 @@ function deleteItem(e) {
 
     const ui = new UI();
     ui.deleteBook(e.target);
-    ui.showAlert("Книга удалена", 'success');
+    Store.deleteBook(e.target);
+
+    // ui.showAlert("Книга удалена", 'success');
     // console.log("test");
     e.preventDefault();
 }
+
+allEventRun();
